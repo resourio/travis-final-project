@@ -1,9 +1,16 @@
 import styled from 'styled-components';
 
+const MerchContent = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
 const Merch = () => {
 	return (
 		<>
-			<p>"MERCH"</p>
+			<MerchContent>
+				<p>"MERCH"</p>
+			</MerchContent>
 		</>
 	);
 };
