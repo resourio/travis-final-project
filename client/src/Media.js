@@ -1,9 +1,16 @@
 import styled from 'styled-components';
 
+const MediaConent = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
 const Media = () => {
 	return (
 		<>
-			<p>"MEDIA!"</p>
+			<MediaConent>
+				<p>"MEDIA!"</p>
+			</MediaConent>
 		</>
 	);
 };

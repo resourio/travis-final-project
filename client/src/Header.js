@@ -1,21 +1,47 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import LoginButton from './Components/LoginButton';
+import LogoutButton from './Components/LogoutButton';
+import Profile from './Components/Profile';
 
 const Title = styled.h1`
 	display: flex;
 	justify-content: center;
-	font-family: Brush Script MT, Brush Script Std, cursive;
-	padding-bottom: 1em;
+	font-family: Papyrus;
+	font-size: 5em;
+	flex: 1;
 `;
 
-const Wrapper = styled.div`
+const TitleWrapper = styled.div`
+	display: flex;
+	background-color: #a0290b;
+	@media only screen and (max-width: 1200px) {
+		display: block;
+	}
+`;
+
+const LoginWrapper = styled.div`
+	display: flex;
+	padding-bottom: 2em;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	/* right: 10em; */
+`;
+
+const GreetingWrapper = styled.div`
+	flex-direction: row;
+`;
+
+const NavWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	justify-content: space-around;
 	align-items: baseline;
-	align-content: center;
-	padding-bottom: 10px;
+	align-content: flex-start;
+	padding-bottom: 2em;
+	padding-top: 3em;
 `;
 
 const Navbar = styled.div`
@@ -41,8 +67,17 @@ const Link = styled(NavLink)`
 const Header = () => {
 	return (
 		<>
-			<Title>Midnight Crawl</Title>
-			<Wrapper>
+			<TitleWrapper>
+				<Title>Midnight Crawl</Title>
+				<LoginWrapper>
+					<LoginButton />
+					<GreetingWrapper>
+						<LogoutButton />
+						<Profile />
+					</GreetingWrapper>
+				</LoginWrapper>
+			</TitleWrapper>
+			<NavWrapper>
 				<Navbar>
 					<Link
 						to='/'
@@ -77,7 +112,7 @@ const Header = () => {
 						Contact
 					</Link>
 				</Navbar>
-			</Wrapper>
+			</NavWrapper>
 		</>
 	);
 };

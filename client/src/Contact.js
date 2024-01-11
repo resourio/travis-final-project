@@ -1,9 +1,16 @@
 import styled from 'styled-components';
 
+const ContactContent = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
 const Contact = () => {
 	return (
 		<>
-			<p>"CONTACT!"</p>
+			<ContactContent>
+				<p>"CONTACT!"</p>
+			</ContactContent>
 		</>
 	);
 };
