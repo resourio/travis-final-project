@@ -1,31 +1,39 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import Homepage from './Homepage';
 import Merch from './Merch';
 import Media from './Media';
-import Contact from './Contact';
+import Comment from './Comment';
 import Header from './Header';
 import Social from './Components/Social';
 import GlobalStyle from './GlobalStyle';
+import UserProfile from './UserProfile';
 
+//create new user upon unique email sign in
 const App = () => {
+	const { user, isAuthenticated } = useAuth0();
+
 	useEffect(() => {
-		fetch('/bacon')
+		console.log(isAuthenticated, 'isAuthenticated');
+		fetch('/users', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(user),
+		})
 			.then((res) => res.json())
-			.then((data) => console.log(data.data));
-		console.log('Use effect has triggered!');
-	}, []);
+			.then((data) => {
+				console.log(data, 'data');
+			});
+	}, [user, isAuthenticated]);
 
 	return (
-		<Auth0Provider
-			domain='dev-p0r5245dqh32fu3h.us.auth0.com'
-			clientId='hjyuFWNyEw7RGZ7XL0cwymyDLNI32TMr'
-			authorizationParams={{
-				redirect_uri: window.location.origin,
-			}}
-		>
+		<>
 			<GlobalStyle />
+
 			<Router>
 				<script
 					src='https://kit.fontawesome.com/e86b79abd1.js'
@@ -36,11 +44,12 @@ const App = () => {
 					<Route path='/' element={<Homepage />} />
 					<Route path='/Merch' element={<Merch />} />
 					<Route path='/Media' element={<Media />} />
-					<Route path='/Contact' element={<Contact />} />
+					<Route path='/Comment' element={<Comment />} />
+					<Route path='/UserProfile' element={<UserProfile />} />
 				</Routes>
 			</Router>
 			<Social />
-		</Auth0Provider>
+		</>
 	);
 };
 
