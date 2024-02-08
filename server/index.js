@@ -6,6 +6,7 @@ const port = 4000;
 const {
 	authenticateUser,
 	submitComment,
+	getComments,
 	editComment,
 	deleteComment,
 } = require('./handlers');
@@ -29,8 +30,9 @@ app.use(express.static('./server/assets'));
 app.get('/bacon', (req, res) => res.status(200).json({ data: '🥓' }));
 app.post('/users', authenticateUser);
 app.post('/comment', submitComment);
-app.put('/edit', editComment);
-app.delete('/delete:commentID', deleteComment);
+app.get('/getComments', getComments);
+app.patch('/comments/:commentID', editComment);
+app.delete('/comments/:commentID', deleteComment);
 app.listen(port, () => {
 	console.log(`Example app listening on port ${port}`);
 });

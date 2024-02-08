@@ -6,7 +6,7 @@ const MediaContent = styled.div`
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-items: center;
-	padding-top: 5em;
+	padding-top: 2em;
 	row-gap: 1em;
 
 	@media only screen and (max-width: 872px) {
@@ -14,7 +14,6 @@ const MediaContent = styled.div`
 		flex-direction: column;
 		justify-content: center;
 		width: auto;
-		padding-top: 0em;
 	}
 `;
 
@@ -22,12 +21,28 @@ const Pictures = styled.div`
 	display: flex;
 	flex-direction: row;
 	column-gap: 1em;
+	@media only screen and (max-width: 872px) {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: auto;
+		row-gap: 1em;
+		/* padding-top: 10px; */
+	}
 `;
 
 const Clips = styled.div`
 	display: flex;
 	flex-direction: row;
 	column-gap: 1em;
+	padding-bottom: 1em;
+	@media only screen and (max-width: 872px) {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: auto;
+		row-gap: 1em;
+	}
 `;
 
 const Media = () => {
@@ -66,6 +81,15 @@ const Media = () => {
 					<iframe
 						width='315'
 						height='480'
+						src='https://www.youtube.com/embed/d9w6-EGSzEk'
+						title='Midnight Crawl - Blood and Honey'
+						frameborder='0'
+						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+						allowfullscreen
+					></iframe>
+					<iframe
+						width='315'
+						height='480'
 						src='https://www.youtube.com/embed/r2LeVbBnJ6w'
 						title='January 23, 2024'
 						frameborder='0'
@@ -76,15 +100,6 @@ const Media = () => {
 						width='315'
 						height='480'
 						src='https://www.youtube.com/embed/JL35VpzPJyY'
-						title='January 23, 2024'
-						frameborder='0'
-						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-						allowfullscreen
-					></iframe>
-					<iframe
-						width='315'
-						height='480'
-						src='https://www.youtube.com/embed/vHD522gUDOc'
 						title='January 23, 2024'
 						frameborder='0'
 						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'

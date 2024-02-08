@@ -14,7 +14,12 @@ const Profile = () => {
 			{error && <p> Authentication Error!</p>}
 			{isAuthenticated && (
 				<Greeting>
-					Greetings <i>{user.name} </i>!
+					<u>
+						Greetings{' '}
+						<b>
+							<i>{user.name} </i>!
+						</b>
+					</u>
 				</Greeting>
 			)}
 		</div>

@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
+import DisplayComments from './Components/DisplayComments';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const ContactContent = styled.div`
-	display: flex;
-	justify-content: center;
+const ButtonSection = styled.div`
+	padding-bottom: 4em;
 `;
 
 const Comment = () => {
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState('');
 	const { user, isAuthenticated } = useAuth0();
+	const fetchComments = () => {
+		fetch('http://localhost:3000/getcomments')
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.status === 400 || data.status === 500) {
+					throw new Error(data.message);
+				} else {
+					setComments(data.data);
+					console.log(data.data);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
-	const HandleCommentSubmit = (e) => {
+	useEffect(() => {
+		fetchComments();
+	}, []);
+
+	const handleCommentSubmit = (e) => {
 		e.preventDefault();
 
 		if (newComment.trim() !== '')
@@ -28,41 +46,34 @@ const Comment = () => {
 				.then((res) => res.json())
 				.then((data) => {
 					console.log(data, 'data');
-					console.log(user.email);
+					fetchComments();
+				})
+				.catch((error) => {
+					console.log(error);
 				});
-		setNewComment('');
-		{
-			setComments([...comments, newComment]);
-			setNewComment('');
-		}
 	};
 
 	return (
 		isAuthenticated && (
 			<div>
-				<div>
-					<h2>Comments</h2>
-					<ul>
-						{comments.map((comment, index) => (
-							<p key={index}>
-								<img src={user.picture} alt='User Photo' height='40'></img>{' '}
-								<i>{user.name}</i> says:"{comment}"
-							</p>
-						))}
-					</ul>
-				</div>
+				<h2>Comments</h2>
 
-				<form onSubmit={HandleCommentSubmit}>
-					<label>
-						New Comment:
-						<input
-							type='text'
-							value={newComment}
-							onChange={(e) => setNewComment(e.target.value)}
-						/>
-					</label>
-					<button type='submit'>Submit!</button>
-				</form>
+				<ButtonSection>
+					<form onSubmit={handleCommentSubmit}>
+						<label>
+							New Comment:
+							<input
+								type='text'
+								value={newComment}
+								onChange={(e) => setNewComment(e.target.value)}
+							/>
+						</label>
+						<button type='submit'>Submit!</button>
+					</form>
+				</ButtonSection>
+				<div>
+					<DisplayComments comments={comments} fetchComments={fetchComments} />
+				</div>
 			</div>
 		)
 	);

@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 require('dotenv').config();
 
 const { MONGO_URI } = process.env;
@@ -68,10 +70,11 @@ const submitComment = async (req, res) => {
 		console.log(`submitComment connected`);
 
 		if (newComment.length) {
+			const commentID = uuidv4();
 			const result = await db
 				.collection('Comments')
-				.insertOne({ newComment, email });
-
+				.insertOne({ newComment, email, commentID });
+			console.log(commentID);
 			result.insertedId
 				? res.status(201).json({
 						status: 201,
@@ -99,34 +102,51 @@ const submitComment = async (req, res) => {
 	}
 };
 
+const getComments = async (req, res) => {
+	const client = new MongoClient(MONGO_URI, options);
+	try {
+		await client.connect();
+
+		const db = client.db('FinalProject');
+		console.log(`getComments connected `);
+
+		const result = await db.collection('Comments').find().toArray();
+
+		return result
+			? res.status(200).json({
+					status: 200,
+					data: result,
+					message: `This is the list of all the Comments.`,
+			  })
+			: res.status(404).json({ status: 404, data: ['Not Found'] });
+	} catch (error) {
+		console.log(error);
+	} finally {
+		client.close();
+		console.log(`getComments disconnected!`);
+	}
+};
+
 const editComment = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
-	const { newComment } = req.body;
-	const originalComment = db.collection('Comments').findOne({ _id });
+	const { newEdit } = req.body;
+	const { commentID } = req.params;
 
 	try {
 		await client.connect();
 		const db = client.db('FinalProject');
 		console.log(`editComment connected`);
-
-		if (originalComment) {
-			let newValues = {};
-			if (newComment.length) {
-				newValues = {
-					$set: { originalComment: newComment },
-				};
-
-				const filter = { _id: _id };
-
-				const result = await db
-					.collection('Comments')
-					.updateOne(filter, newValues);
-			}
-
+		const oldComment = await db.collection('Comments').findOne({ commentID });
+		if (oldComment) {
+			const result = await db
+				.collection('Comments')
+				.updateOne({ commentID }, { $set: { newComment: newEdit } });
+			console.log(oldComment);
+			console.log(newEdit, 'newEdit');
 			result.modifiedCount
 				? res.status(201).json({
 						status: 201,
-						data: comments,
+						data: req.body,
 						message: 'Comment edited',
 				  })
 				: res.status(404).json({
@@ -152,35 +172,25 @@ const editComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
 	const client = new MongoClient(MONGO_URI, options);
-	const _id = req.params.commentID;
-	const commentToDelete = db.collection('Comments').findOne({ _id });
+	const { commentID } = req.params;
 
 	try {
 		await client.connect();
 		const db = client.db('FinalProject');
 		console.log(`deleteComment connected`);
-
-		if (commentToDelete) {
-			const result = await db.collection('Comments').deleteOne({ _id });
-
-			result.deletedCount
-				? res.status(201).json({
-						status: 201,
-						data: comments,
-						message: 'Comment deleted',
-				  })
-				: res.status(404).json({
-						status: 404,
-						data: req.body,
-						message: `Comment not deleted.`,
-				  });
-		} else {
-			res.status(404).json({
-				status: 404,
-				data: req.body,
-				message: `Comment not deleted.`,
-			});
-		}
+		const result = await db.collection('Comments').deleteOne({ commentID });
+		console.log(result);
+		result && result.deletedCount
+			? res.status(201).json({
+					status: 201,
+					data: req.body,
+					message: 'Comment deleted',
+			  })
+			: res.status(404).json({
+					status: 404,
+					data: req.body,
+					message: `Comment not deleted.`,
+			  });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ status: 500, data: req.body, message: error });
@@ -193,6 +203,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
 	authenticateUser,
 	submitComment,
+	getComments,
 	editComment,
 	deleteComment,
 };
