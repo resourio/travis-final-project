@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const UserProfileInfo = styled.div`
-	align-items: center;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	row-gap: 10px;
 `;
 const UserProfile = () => {
 	const { user, isAuthenticated } = useAuth0();

@@ -2,7 +2,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import styled from 'styled-components';
 
 const Button = styled.button`
-	/* box-shadow: 0 0 0 0.5em gray; */
+	border-radius: 6px;
+	cursor: pointer;
 `;
 
 const LoginButton = () => {
@@ -11,7 +12,9 @@ const LoginButton = () => {
 	return (
 		!isLoading &&
 		!isAuthenticated && (
-			<Button onClick={() => loginWithRedirect()}>Sign In</Button>
+			<Button onClick={() => loginWithRedirect()}>
+				Sign In / Create Account
+			</Button>
 		)
 	);
 };

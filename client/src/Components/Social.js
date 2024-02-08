@@ -10,9 +10,11 @@ import {
 
 const SocialWrapper = styled.div`
 	display: flex;
-	padding-top: 3.5em;
+	padding-top: 0.5em;
 	justify-content: center;
 	align-items: flex-end;
+	background: #dbdbdb;
+	border-top: 3px solid #cdd0d4;
 `;
 
 const SocialIcons = styled.div`

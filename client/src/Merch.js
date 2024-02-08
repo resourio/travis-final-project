@@ -7,17 +7,22 @@ const MerchContent = styled.div`
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	padding-top: 5em;
+	padding-top: 2em;
 	@media only screen and (max-width: 872px) {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		width: auto;
 		padding-top: 0em;
+		row-gap: 1em;
 	}
 `;
 
-const Merch = () => {
+const Clip = styled.div`
+	padding-bottom: 1em;
+`;
+
+const Merch = (isLoading) => {
 	return (
 		<>
 			<MerchContent>
@@ -34,7 +39,18 @@ const Merch = () => {
 				></img>
 				<p>stickers!</p>
 			</MerchContent>
-			<p>Fun!</p>
+			<p>Fun! More merch to come!</p>
+			<Clip>
+				<iframe
+					width='315'
+					height='560'
+					src='https://www.youtube.com/embed/vHD522gUDOc'
+					title='January 23, 2024'
+					frameborder='0'
+					allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+					allowfullscreen
+				></iframe>
+			</Clip>
 		</>
 	);
 };
